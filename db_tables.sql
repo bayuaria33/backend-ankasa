@@ -25,9 +25,10 @@ CREATE TABLE tickets (
     airlines_id VARCHAR,
 	departure_city VARCHAR,
 	arrival_city VARCHAR,
-	departure_country TIMESTAMP,
-	arrive_country TIMESTAMP,
+	departure_country VARCHAR,
+	arrival_country VARCHAR,
     departure_date TIMESTAMP,
+    arrival_date TIMESTAMP,
     transit VARCHAR,
     facilities INTEGER,
     price DECIMAL(12,2),
@@ -42,5 +43,4 @@ CREATE TABLE bookings (
     passengers INTEGER,
     created_at TIMESTAMP DEFAULT NOW(),
     deleted_at TIMESTAMP DEFAULT NULL
-)
-
+);
