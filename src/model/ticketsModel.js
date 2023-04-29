@@ -53,11 +53,12 @@ const updateTicket = (data) => {
   );
 };
 
-const getAllTickets = () => {
+const getAllTickets = (data) => {
+  let { searchBy, search, sortBy, sort, limit, offset } = data;
   const query = `SELECT t.id, air.airline_name as airline, t.departure_city, t.departure_country, t.arrival_city, t.arrival_country, t.departure_date, t.arrival_date, t.transit, t.facilities, t.price 
     from tickets t
     INNER JOIN airlines as air ON t.airlines_id = air.id
-    WHERE t.deleted_at IS NULL`;
+    WHERE t.deleted_at IS NULL AND ${searchBy} ILIKE '%${search}%' ORDER BY t.${sortBy} ${sort} LIMIT ${limit} OFFSET ${offset}`;
   return new Promise((resolve, reject) =>
     Pool.query(query, (err, result) => {
       if (!err) {

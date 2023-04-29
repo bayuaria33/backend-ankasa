@@ -80,7 +80,18 @@ const TicketsController = {
   },
   getAll: async (req, res, next) => {
     try {
-      const response = await getAllTickets();
+      let { searchBy, search, sortBy, sort } = req.query;
+      let data = {
+        searchBy: searchBy || "air.airline_name",
+        search: search || "",
+        sortBy: sortBy || "created_at",
+        sort: sort || "ASC",
+      };
+      data.page = parseInt(req.query.page) || 1;
+      data.limit = parseInt(req.query.limit) || 50;
+      data.offset = (data.page - 1) * data.limit;
+
+      const response = await getAllTickets(data);
       return res
         .status(200)
         .json({ msg: `Success get all Tickets`, data: response.rows });

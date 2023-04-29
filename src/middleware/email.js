@@ -10,12 +10,12 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-module.exports = (emailClient, subject, name) => {
+module.exports = (emailClient, subject) => {
   let mailOption = {
     from: process.env.EMAIL_NAME,
     to: emailClient,
     subject: `${subject} is your otp`,
-    text: `Hello ${name}, ${subject} is your otp.`,
+    text: `Hello New User, ${subject} is your otp.`,
   };
 
   new Promise((resolve, reject) => {
