@@ -5,7 +5,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const app = express();
-const port = 3000;
+const port = 4000;
 const mainRoute = require(`./src/routes/index`);
 app.use(
   cors({

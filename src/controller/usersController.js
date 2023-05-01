@@ -51,7 +51,7 @@ const UsersController = {
         return res.status(201).json({
           status: 200,
           message: `Register Success`,
-          data: result.rows,
+          data: data,
         });
       }
     } catch (error) {
