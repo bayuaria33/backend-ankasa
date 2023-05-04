@@ -28,8 +28,21 @@ const findUser = (email) => {
   );
 };
 
-const checkOTP = (data) =>{
-  const {email, otp} = data
+const findUserById = (id) => {
+  let qry = `SELECT * FROM users WHERE id='${id}'`;
+  return new Promise((resolve, reject) =>
+    Pool.query(qry, (err, result) => {
+      if (!err) {
+        resolve(result);
+      } else {
+        reject(err);
+      }
+    })
+  );
+};
+
+const checkOTP = (data) => {
+  const { email, otp } = data;
   let qry = `SELECT * FROM users WHERE email='${email}' AND otp = '${otp}'`;
   return new Promise((resolve, reject) =>
     Pool.query(qry, (err, result) => {
@@ -40,7 +53,7 @@ const checkOTP = (data) =>{
       }
     })
   );
-}
+};
 
 const verifyUser = (id) => {
   let qry = `UPDATE users SET verified = true WHERE id='${id}'`;
@@ -55,8 +68,8 @@ const verifyUser = (id) => {
   );
 };
 
-const changePassword = (data) =>{
-  const {email, password} = data
+const changePassword = (data) => {
+  const { email, password } = data;
   let qry = `UPDATE users SET password = '${password}' WHERE email='${email}'`;
   return new Promise((resolve, reject) =>
     Pool.query(qry, (err, result) => {
@@ -67,12 +80,28 @@ const changePassword = (data) =>{
       }
     })
   );
-}
+};
+
+const updateUser = (id, data) => {
+  let { fullname, email, photo, phone, city, country, postalcode } = data;
+  let qry = `UPDATE users SET fullname='${fullname}',email='${email}',photo='${photo}',phone='${phone}', city='${city}',country='${country}', postalcode='${postalcode}' WHERE id='${id}'`;
+  return new Promise((resolve, reject) =>
+    Pool.query(qry, (err, result) => {
+      if (!err) {
+        resolve(result);
+      } else {
+        reject(err);
+      }
+    })
+  );
+};
 
 module.exports = {
   createUser,
   findUser,
+  findUserById,
   checkOTP,
   verifyUser,
-  changePassword
+  changePassword,
+  updateUser,
 };

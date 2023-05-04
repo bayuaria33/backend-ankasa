@@ -67,7 +67,7 @@ const AirlineController = {
           folder: "ankasa_images",
         });
         // console.log(imageUrl);
-        req.body.photo = imageUrl;
+        req.body.photo = imageUrl.secure_url;
       }
       const data = {
         id,

@@ -70,7 +70,7 @@ const getAllTickets = (data) => {
   );
 };
 const getTicketById = (id) => {
-  const query = `SELECT t.id, air.airline_name as airline, t.departure_city, t.departure_country, t.arrival_city, t.arrival_country, t.departure_date, t.arrival_date, t.transit, t.facilities, t.price 
+  const query = `SELECT t.id, air.airline_name as airline, air.photo as airline_photo, t.departure_city, t.departure_country, t.arrival_city, t.arrival_country, t.departure_date, t.arrival_date, t.transit, t.facilities, t.price 
     from tickets t
     INNER JOIN airlines as air ON t.airlines_id = air.id
     WHERE t.id = '${id}' AND t.deleted_at IS NULL`;

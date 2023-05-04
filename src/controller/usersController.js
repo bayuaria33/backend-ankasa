@@ -5,7 +5,10 @@ const {
   findUser,
   checkOTP,
   verifyUser,
+  findUserById,
+  updateUser,
 } = require("../model/usersModel");
+const cloudinary = require("../config/uploadconfig");
 const mailer = require("../middleware/email");
 
 const { generateAccessToken } = require("../helpers/generateToken");
@@ -228,6 +231,49 @@ const UsersController = {
       });
     } catch (error) {
       return res.status(404).json({ status: 404, message: error.message });
+    }
+  },
+
+  updateUser: async (req, res, next) => {
+    try {
+      let id = req.payload.id;
+      let {
+        rows: [users],
+      } = await findUserById(id);
+
+      if (!users) {
+        return res.status(404).json({
+          status: 404,
+          message: `User not found`,
+        });
+      }
+
+      if (!req.file) {
+        req.body.photo = users.photo;
+      } else {
+        const imageUrl = await cloudinary.uploader.upload(req.file.path, {
+          folder: "ankasa_images",
+        });
+        req.body.photo = imageUrl.secure_url;
+      }
+      //cek if undefined
+      let data = {
+        fullname: req.body.fullname || users.fullname,
+        email: req.body.email || users.email,
+        photo: req.body.photo || users.photo,
+        phone: req.body.phone || users.phone,
+        city: req.body.city || users.city,
+        country: req.body.country || users.country,
+        postalcode: req.body.postalcode || users.postalcode,
+      };
+      console.log(data);
+      const response = await updateUser(id, data);
+      if (!response) {
+        return res.status(401).json({ msg: "failed update user" });
+      }
+      return res.status(201).json({ msg: "success update user" });
+    } catch (error) {
+      return res.status(400).json({ msg: error.message });
     }
   },
 };
