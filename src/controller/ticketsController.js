@@ -23,6 +23,9 @@ const TicketsController = {
         transit: req.body.transit,
         facilities: req.body.facilities,
         price: req.body.price,
+        flight_class: req.body.flight_class,
+        gate: req.body.gate,
+        terminal: req.body.terminal,
       };
 
       // Check if any field is undefined or null
@@ -60,7 +63,10 @@ const TicketsController = {
         arrival_date: req.body.arrival_date || ticket.arrival_date,
         transit: req.body.transit || ticket.airlines_id,
         facilities: req.body.facilities || ticket.airlines_id,
-        price: req.body.price || ticket.airlines_id,
+        price: req.body.price || ticket.price,
+        flight_class: req.body.flight_class || ticket.flight_class,
+        gate: req.body.gate || ticket.gate,
+        terminal: req.body.terminal || ticket.terminal,
       };
       // Check if any field is undefined or null
       for (const [key, value] of Object.entries(data)) {

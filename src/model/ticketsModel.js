@@ -13,6 +13,9 @@ const insertTicket = (data) => {
     arrival_date,
     transit,
     facilities,
+    flight_class,
+    gate,
+    terminal
   } = data;
   const query = `INSERT INTO tickets(id, airlines_id,  departure_city, arrival_city, departure_country , arrival_country , price , departure_date , arrival_date, transit , facilities , created_at) 
   VALUES('${id}','${airlines_id}','${departure_city}','${arrival_city}','${departure_country}','${arrival_country}','${price}','${departure_date}', '${arrival_date}', '${transit}','${facilities}',NOW()::timestamp)`;
@@ -40,6 +43,9 @@ const updateTicket = (data) => {
     arrival_date,
     transit,
     facilities,
+    flight_class,
+    gate,
+    terminal
   } = data;
   const query = `UPDATE tickets SET airlines_id='${airlines_id}', departure_city='${departure_city}' , arrival_city='${arrival_city}', departure_country='${departure_country}',arrival_country='${arrival_country}',price='${price}',departure_date='${departure_date}',arrival_date='${arrival_date}',transit='${transit}',facilities='${facilities}' WHERE id='${id}' `;
   return new Promise((resolve, reject) =>
@@ -55,7 +61,7 @@ const updateTicket = (data) => {
 
 const getAllTickets = (data) => {
   let { searchBy, search, sortBy, sort, limit, offset } = data;
-  const query = `SELECT t.id, air.airline_name as airline, air.photo as airline_photo, t.departure_city, t.departure_country, t.arrival_city, t.arrival_country, t.departure_date, t.arrival_date, t.transit, t.facilities, t.price 
+  const query = `SELECT t.id, air.airline_name as airline, air.photo as airline_photo, t.departure_city, t.departure_country, t.arrival_city, t.arrival_country, t.departure_date, t.arrival_date, t.transit, t.facilities, t.price, t.gate, t.terminal, t.flight_class
     from tickets t
     INNER JOIN airlines as air ON t.airlines_id = air.id
     WHERE t.deleted_at IS NULL AND ${searchBy} ILIKE '%${search}%' ORDER BY t.${sortBy} ${sort} LIMIT ${limit} OFFSET ${offset}`;
@@ -70,7 +76,7 @@ const getAllTickets = (data) => {
   );
 };
 const getTicketById = (id) => {
-  const query = `SELECT t.id, air.airline_name as airline, air.photo as airline_photo, t.departure_city, t.departure_country, t.arrival_city, t.arrival_country, t.departure_date, t.arrival_date, t.transit, t.facilities, t.price 
+  const query = `SELECT t.id, air.airline_name as airline, air.photo as airline_photo, t.departure_city, t.departure_country, t.arrival_city, t.arrival_country, t.departure_date, t.arrival_date, t.transit, t.facilities, t.price, t.gate, t.terminal, t.flight_class
     from tickets t
     INNER JOIN airlines as air ON t.airlines_id = air.id
     WHERE t.id = '${id}' AND t.deleted_at IS NULL`;

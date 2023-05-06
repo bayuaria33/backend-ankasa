@@ -4,13 +4,15 @@ const BookingsController = {
   insert: async (req, res, next) => {
     try {
       const id = uuidv4();
-      const { tickets_id, users_id, passengers, title } = req.body;
+      const { tickets_id, users_id, passengers, title, payment_status, insured } = req.body;
       const data = {
         id,
         tickets_id,
         users_id,
         passengers,
         title,
+        payment_status,
+        insured
       };
       for (const [key, value] of Object.entries(data)) {
         if (value === undefined || value === null || value === "") {
@@ -32,12 +34,10 @@ const BookingsController = {
   getByUser: async (req, res) => {
     try {
       const id = req.payload.id;
-      console.log(id);
       const response = await getBookingsByUser(id);
       if (!response) {
         return res.status(401).json({ msg: "failed get booking" });
       }
-      console.log({response});
       return res
         .status(201)
         .json({ msg: "success get booking", data: response.rows });
@@ -49,12 +49,10 @@ const BookingsController = {
   getById: async (req, res) => {
     try {
       const id = req.params.id;
-      // console.log(id);
       const response = await getBookingsById(id);
       if (!response) {
         return res.status(401).json({ msg: "failed get booking" });
       }
-      // console.log({response});
       return res
         .status(201)
         .json({ msg: "success get booking", data: response.rows });
