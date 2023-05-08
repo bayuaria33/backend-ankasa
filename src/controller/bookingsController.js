@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
-const { insertBooking, getBookingsByUser, getBookingsById } = require("../model/bookingsModel");
+const { insertBooking, getBookingsByUser, getBookingsById, updatePayment } = require("../model/bookingsModel");
 const BookingsController = {
   insert: async (req, res, next) => {
     try {
@@ -58,6 +58,36 @@ const BookingsController = {
         .json({ msg: "success get booking", data: response.rows });
     } catch (error) {
       return res.status(400).json({ msg: error.message });
+    }
+  },
+
+  updatePayment: async (req, res, next) => {
+    try {
+      if (!req.body.id || !req.body.status) {
+        res
+          .status(404)
+          .json({ status: 404, message: `Missing Id / Status` });
+      } else {
+        let data = {
+          id: req.body.id,
+          status: req.body.status,
+        };
+        let result = await updatePayment(data);
+        // it wokrs
+        if (!result) {
+          res.status(404).json({
+            status: 404,
+            message: `Update payment status failed`,
+          });
+        } else {
+          res.status(200).json({
+            status: 200,
+            message: `Update payment status success`,
+          });
+        }
+      }
+    } catch (error) {
+      return res.status(404).json({ msg: error.message });
     }
   },
 };

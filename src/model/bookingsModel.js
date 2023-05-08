@@ -24,7 +24,7 @@ const insertBooking = (data) => {
 
 //TODO
 const getBookingsByUser = (id) => {
-  const query = `SELECT bookings.id, bookings.payment_status, bookings.insured , airlines.airline_name, airlines.photo, tickets.departure_country, tickets.arrival_country, tickets.departure_date, tickets.arrival_date
+  const query = `SELECT bookings.id, bookings.payment_status, bookings.insured , airlines.airline_name, airlines.photo, tickets.departure_country, tickets.arrival_country, tickets.departure_date, tickets.arrival_date, tickets.flight_class, tickets.gate, tickets.terminal
   FROM bookings
   JOIN tickets ON bookings.tickets_id = tickets.id
   JOIN airlines ON tickets.airlines_id = airlines.id WHERE bookings.users_id = '${id}'`;
@@ -40,7 +40,7 @@ const getBookingsByUser = (id) => {
 };
 
 const getBookingsById = (id) => {
-  const query = `SELECT bookings.id , bookings.payment_status, bookings.insured, airlines.airline_name, airlines.photo, tickets.departure_country, tickets.arrival_country, tickets.departure_date, tickets.arrival_date, tickets.class, tickets.gate, tickets.terminal 
+  const query = `SELECT bookings.id , bookings.payment_status, bookings.insured, airlines.airline_name, airlines.photo, tickets.departure_country, tickets.arrival_country, tickets.departure_date, tickets.arrival_date, tickets.flight_class, tickets.gate, tickets.terminal, tickets.price, bookings.passengers, bookings.insured 
   FROM bookings
   JOIN tickets ON bookings.tickets_id = tickets.id
   JOIN airlines ON tickets.airlines_id = airlines.id WHERE bookings.id = '${id}'`;
@@ -55,8 +55,23 @@ const getBookingsById = (id) => {
   );
 };
 
+const updatePayment = (data) => {
+  const {id, status} = data
+  let qry = `UPDATE bookings SET payment_status = ${status} WHERE id='${id}'`;
+  return new Promise((resolve, reject) =>
+    Pool.query(qry, (err, result) => {
+      if (!err) {
+        resolve(result);
+      } else {
+        reject(err);
+      }
+    })
+  );
+};
+
 module.exports = {
   insertBooking,
   getBookingsByUser,
   getBookingsById,
+  updatePayment
 };
