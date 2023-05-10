@@ -6,9 +6,11 @@ const {
   getAll,
   getById,
   update,
+  filterTicket,
 } = require("../controller/ticketsController");
 
 router.get("/all", getAll);
+router.get("/filter", filterTicket);
 router.get("/:id", getById);
 router.put("/:id", update);
 router.post("/", insert);

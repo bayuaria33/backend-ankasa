@@ -5,6 +5,7 @@ const {
   getTicketById,
   updateTicket,
   deleteTicket,
+  getTicketFilter,
 } = require("../model/ticketsModel");
 
 const TicketsController = {
@@ -105,6 +106,35 @@ const TicketsController = {
       return res.status(400).json({ msg: error.message, data: error.data });
     }
   },
+  filterTicket: async (req, res, next) => {
+    try {
+      let { sortBy, sort, t1, t2, transit, facilities, airlines_id, search, p1, p2 } =
+        req.query;
+      let data = {
+        sortBy: sortBy || "created_at",
+        sort: sort || "ASC",
+        t1: t1 || "0",
+        t2: t2 || "24",
+        transit: transit || "",
+        facilities: facilities || 0,
+        airlines_id: airlines_id || "",
+        search: search || "",
+        p1: p1 || "0",
+        p2: p2 || "1000",
+      };
+      data.page = parseInt(req.query.page) || 1;
+      data.limit = parseInt(req.query.limit) || 50;
+      data.offset = (data.page - 1) * data.limit;
+
+      const response = await getTicketFilter(data);
+      return res
+        .status(200)
+        .json({ msg: `Success get Tickets`, data: response.rows });
+    } catch (error) {
+      return res.status(400).json({ msg: error.message, data: error.data });
+    }
+  },
+
   getById: async (req, res, next) => {
     try {
       const id = req.params.id;
