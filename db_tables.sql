@@ -33,7 +33,10 @@ CREATE TABLE tickets (
     facilities INTEGER,
     price DECIMAL(12,2),
     created_at TIMESTAMP DEFAULT NOW(),
-    deleted_at TIMESTAMP DEFAULT NULL
+    deleted_at TIMESTAMP DEFAULT NULL,
+    flight_class VARCHAR,
+    gate VARCHAR,
+    terminal VARCHAR
 );
 
 CREATE TABLE bookings (
@@ -42,5 +45,8 @@ CREATE TABLE bookings (
     users_id VARCHAR,
     passengers INTEGER,
     created_at TIMESTAMP DEFAULT NOW(),
-    deleted_at TIMESTAMP DEFAULT NULL
+    deleted_at TIMESTAMP DEFAULT NULL,
+    title VARCHAR,
+    payment_status INTEGER,
+    insured BOOLEAN
 );
